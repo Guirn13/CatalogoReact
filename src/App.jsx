@@ -1,8 +1,13 @@
 import './App.css';
+import OrderDetails from './components/OrderDetails';
+import Item from './components/Item';
+import { useState } from 'react';
+
+
 
 function App() {
 
-    const items = [
+    const [items, setItems] = useState([
         {
 
             id: 1,
@@ -84,59 +89,39 @@ function App() {
             quantity: 1,
             isInBag: false
         }
-    ];
+    ]);
+
+    const itemsInBag = items.filter(item => item.isInBag);
+
+    function selectHandler(id) {
+        let item = items.filter(item => item.id === id)[0];
+        item.isInBag = !item.isInBag;
+        setItems(items.map(el => el.id === id ? item : el));
+    }
+
+    function quantityHandler(e, id, increment) {
+        e.stopPropagation();
+        let item = items.filter(item => item.id === id)[0];
+        item.quantity = item.quantity += increment;
+        setItems(items.map(el => el.id === id ? item : el));
+    }
 
     return (
         <>
             <section className="items">
+
                 <h4>Jersey Shop React JS</h4>
-
-
                 {items.map(item =>
-                    <div key={item.id} className={` product ${item.isInBag ? 'selected' : ''}`}>
-                        <div className="photo">
-                            <img src={"./img/" + item.photo} />
-                        </div>
-                        <div className="description">
-                            <span className="name">{item.name}</span>
-                            <span className="price">$ {item.price}</span>
-                            {item.isInBag &&
-                                <div className="quantity-area">
-                                    <button>-</button>
-                                    <span className="quantity">{item.quantity}</span>
-                                    <button>+</button>
-                                </div>
-                            }
-                        </div>
-                    </div>
+                    <Item
+                        changeQuantity={(e, id, increment) => quantityHandler(e, id, increment)}
+                        selectProduct={(id) => selectHandler(id)}
+                        item={item}
+                        key={item.id}
+                    />
                 )}
 
             </section>
-
-
-            <section className="summary">
-                <strong>Order Details</strong>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1x Real Madrid</td>
-                            <td>$ 119.99</td>
-                        </tr>
-
-                        <tr>
-                            <th>Total</th>
-                            <th>$ 119.99</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-
+            {itemsInBag.length > 0 && <OrderDetails itemsInBag={itemsInBag} />}
         </>
     );
 }

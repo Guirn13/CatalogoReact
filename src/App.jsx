@@ -110,7 +110,7 @@ function App() {
         <>
             <section className="items">
 
-                <h4>Jersey Shop React JS</h4>
+                <h4>Catálogo React JS</h4>
                 {items.map(item =>
                     <Item
                         changeQuantity={(e, id, increment) => quantityHandler(e, id, increment)}

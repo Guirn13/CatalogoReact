@@ -25,12 +25,12 @@ function OrderDetails({ itemsInBag }) {
                         {itemsInBag.map(item =>
                             <tr key={item.id}>
                                 <td>{item.quantity}x {item.name}</td>
-                                <td>$ {(item.price * item.quantity).toFixed(2)}</td>
+                                <td>R$ {(item.price * item.quantity).toFixed(2)}</td>
                             </tr>
                         )}
                         <tr>
                             <th>Total</th>
-                            <th>$ {calculatorTotal()}</th>
+                            <th>R$ {calculatorTotal()}</th>
                         </tr>
                     </tbody>
                 </table>
